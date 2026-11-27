@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#dfe8fd">
+<title>Radio Islami</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#dfe8fd;--card:#fff;--soft:#f5f7fd;--ink:#171c30;--mute:#59617a;--blue:#2f5fe8;--blue-soft:#e3eaff;--shadow:0 18px 50px rgba(54,80,160,.16)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:100%}
+html.besar{font-size:118%}
+body{font-family:"Plus Jakarta Sans",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+button,a{font:inherit;color:inherit;cursor:pointer;text-decoration:none}
+button{border:0;background:none}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #f59e0b;outline-offset:2px}
+svg{width:1.6rem;height:1.6rem;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.app{display:flex;justify-content:center;gap:2rem;align-items:center;min-height:100vh}
+.phone{position:relative;background:var(--card);width:100%;max-width:430px;height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+.scroll{flex:1;overflow-y:auto;padding:1rem 1.1rem 1.5rem;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+@media(max-width:899px){.phone{display:none}.phone.aktif{display:flex}}
+@media(min-width:900px){.phone{height:min(900px,94vh);border-radius:40px;box-shadow:var(--shadow)}.hanya-hp{visibility:hidden}}
+
+.top{display:flex;align-items:center;gap:.6rem;margin-bottom:1rem}
+.top h1{font-size:1.3rem;flex:1;min-width:0;line-height:1.25}
+.top h1 small{display:block;font-size:.85rem;color:var(--mute);font-weight:600}
+.bulat{flex:none;min-width:min(3.2rem,54px);height:min(3.2rem,54px);border-radius:999px;display:grid;place-items:center;background:var(--soft);font-weight:800;font-size:1.05rem}
+.bulat.on{background:var(--blue);color:#fff}
+.judul{display:flex;justify-content:space-between;align-items:center;margin:1.3rem 0 .7rem}
+.judul h2{font-size:1.1rem}
+.judul button{color:var(--blue);font-weight:700;font-size:.95rem;min-height:2.75rem;padding:0 .3rem}
+
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}
+.mini{display:flex;align-items:center;gap:.6rem;background:var(--soft);border-radius:1.1rem;padding:.6rem;text-align:left;min-height:4.4rem;min-width:0}
+.mini span.t{font-size:.9rem;font-weight:700;line-height:1.25;overflow-wrap:anywhere}
+.art{border-radius:.9rem;display:grid;place-items:center;color:#fff;font-weight:800;position:relative;overflow:hidden;flex:none;background:linear-gradient(140deg,var(--a),var(--b))}
+.art::after{content:"";position:absolute;width:90%;height:90%;right:-35%;top:-35%;border:.35rem solid rgba(255,255,255,.22);border-radius:30%;transform:rotate(45deg)}
+.art.s{width:3.1rem;height:3.1rem;font-size:.95rem}
+
+.geser{display:flex;align-items:flex-start;gap:.85rem;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.4rem;scrollbar-width:none}
+.besar-card{scroll-snap-align:start;flex:0 0 9.5rem;text-align:left}
+.besar-card .art{width:9.5rem;height:9.5rem;border-radius:1.4rem;font-size:2.4rem}
+.besar-card .main{position:absolute;z-index:1;bottom:.6rem;right:.6rem;width:3rem;height:3rem;border-radius:99px;background:#fff;color:var(--blue);display:grid;place-items:center}
+.besar-card b{display:block;margin-top:.5rem;font-size:1rem;line-height:1.25}
+.besar-card small{color:var(--mute);font-size:.85rem}
+
+.cari{width:100%;font:inherit;font-size:1.05rem;padding:.9rem 1.1rem;border-radius:1.1rem;border:2px solid #dbe2f5;background:var(--soft);margin-bottom:.7rem}
+.list{display:flex;flex-direction:column;gap:.65rem}
+.baris{display:flex;align-items:center;gap:.75rem;background:var(--soft);border-radius:1.2rem;padding:.7rem;width:100%;text-align:left;border:2px solid transparent;min-height:4.6rem}
+.baris.on{border-color:var(--blue);background:#fff}
+.baris .info{flex:1;min-width:0}
+.baris .info b{display:block;font-size:1.05rem;line-height:1.3}
+.baris.on .info b{color:var(--blue)}
+.baris .info small{display:block;color:var(--mute);font-size:.88rem}
+.aksi{display:flex;flex-direction:column;align-items:center;font-size:.75rem;font-weight:800;color:var(--blue);background:var(--blue-soft);border-radius:.9rem;padding:.45rem;min-width:4rem}
+.aksi.luar{color:#8a4b00;background:#fff0d6}
+.kosong{color:var(--mute);padding:1rem;text-align:center;line-height:1.6}
+
+nav{display:flex;justify-content:space-around;align-items:center;padding:.5rem .5rem calc(.5rem + env(safe-area-inset-bottom));box-shadow:0 -8px 24px rgba(54,80,160,.09);background:#fff}
+nav button{display:flex;flex-direction:column;align-items:center;gap:.15rem;font-size:.8rem;font-weight:700;color:var(--mute);min-width:5rem;min-height:3.5rem;justify-content:center}
+nav button.on{color:var(--blue)}
+nav .tengah i{width:3.6rem;height:3.6rem;border-radius:99px;background:var(--blue);color:#fff;display:grid;place-items:center;box-shadow:0 10px 22px rgba(47,95,232,.4)}
+
+.mini-player{display:flex;align-items:center;gap:.7rem;margin:0 .8rem .5rem;padding:.55rem .7rem;border-radius:1.2rem;background:var(--ink);color:#fff}
+.mini-player[hidden]{display:none}
+.mini-player button.buka{flex:1;text-align:left;min-width:0;font-weight:700}
+.mini-player small{display:block;color:#b9c3e6;font-weight:600}
+@media(min-width:900px){.mini-player{display:none}}
+
+.bingkai{position:relative;width:min(70%,17rem,36vh);aspect-ratio:1;margin:.3rem auto .4rem}
+.bingkai>svg{position:absolute;inset:0;width:100%;height:100%}
+.bingkai rect{stroke-width:2.6}
+.bingkai .dasar{stroke:#e4eafb}
+.bingkai .jalan{stroke:var(--blue);stroke-dasharray:70 30;opacity:.35}
+.main-on .bingkai .jalan{opacity:1;animation:putar 6s linear infinite}
+@keyframes putar{to{stroke-dashoffset:-100}}
+.bingkai .art{position:absolute;inset:7%;border-radius:1.6rem;font-size:3.5rem;box-shadow:0 16px 36px rgba(30,45,110,.28)}
+.status{text-align:center;font-weight:700;color:var(--mute);font-size:.95rem;min-height:1.5em}
+.status.live{color:var(--blue)}
+.status.err{color:#b42318}
+.nama{display:flex;align-items:center;gap:.5rem;margin-top:.4rem}
+.nama div{flex:1;text-align:center;min-width:0}
+.nama h2{font-size:1.45rem;line-height:1.25}
+.nama p{color:var(--mute);font-size:.95rem}
+#fav.on{color:var(--blue);background:var(--blue-soft)}#fav.on svg{fill:var(--blue)}
+.gelombang{display:flex;align-items:center;justify-content:center;gap:3px;height:2.6rem;margin:.5rem 0}
+.gelombang i{width:4px;border-radius:4px;background:#cdd8fa;height:var(--h)}
+.main-on .gelombang i{background:var(--blue);animation:naik var(--d) ease-in-out infinite alternate}
+@keyframes naik{to{transform:scaleY(.3)}}
+.kontrol{display:flex;justify-content:space-between;align-items:center}
+.kontrol button{display:flex;flex-direction:column;align-items:center;gap:.2rem;font-size:.78rem;font-weight:700;color:var(--mute);min-width:0;flex:1;min-height:3.6rem;justify-content:center}
+.kontrol .utama i{width:min(5.4rem,24vw,92px);height:min(5.4rem,24vw,92px);border-radius:99px;background:var(--blue);color:#fff;display:grid;place-items:center;box-shadow:0 14px 30px rgba(47,95,232,.42)}
+.kontrol .utama svg{width:2.6rem;height:2.6rem;fill:currentColor}
+.kontrol button.utama{flex:1.7;color:var(--ink);font-size:.95rem}
+.tombol-lebar{display:block;text-align:center;width:100%;padding:1rem;border-radius:1.1rem;background:var(--blue);color:#fff;font-weight:800;font-size:1.05rem;margin-top:.7rem}
+.tombol-lebar.dua{background:var(--blue-soft);color:var(--blue)}
+.tombol-lebar[hidden]{display:none}
+.volume{display:flex;align-items:center;gap:.8rem;margin-top:.9rem;font-weight:700;font-size:.9rem}
+.volume input{flex:1;min-width:0;height:2.5rem;accent-color:var(--blue)}
+.tidur{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.45rem}
+.tidur button{background:var(--soft);border-radius:.9rem;min-height:3rem;font-weight:700;font-size:.9rem}
+.tidur button.on{background:var(--blue);color:#fff}
+
+dialog{margin:auto;border:0;border-radius:1.5rem;padding:1.3rem;width:min(92vw,24rem);color:var(--ink);line-height:1.6}
+dialog::backdrop{background:rgba(15,20,45,.55)}
+dialog ol{padding-left:1.3rem;margin:.6rem 0}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<main class="app">
+
+<!-- LAYAR PEMUTAR -->
+<section class="phone" id="layarPutar" aria-label="Pemutar">
+  <div class="scroll">
+    <header class="top">
+      <button class="bulat hanya-hp" data-ke="beranda" aria-label="Kembali ke daftar radio"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <h1 style="text-align:center">Sedang Didengar</h1>
+      <button class="bulat" id="bagikan" aria-label="Bagikan"><svg viewBox="0 0 24 24"><path d="M12 15V3m0 0L8 7m4-4l4 4M6 11H5v10h14V11h-1"/></svg></button>
+    </header>
+    <div class="bingkai">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><rect class="dasar" x="1.5" y="1.5" width="97" height="97" rx="20"/><rect class="jalan" x="1.5" y="1.5" width="97" height="97" rx="20" pathLength="100"/></svg>
+      <div class="art" id="sampul"></div>
+    </div>
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+    <div class="nama">
+      <button class="bulat" id="fav" aria-label="Simpan sebagai favorit"><svg viewBox="0 0 24 24"><path d="M12 20s-8-5-8-11a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 9c0 6-8 11-8 11z"/></svg></button>
+      <div><h2 id="judul"></h2><p id="sub"></p></div>
+      <span style="width:3.2rem"></span>
+    </div>
+    <div class="gelombang" id="gelombang" aria-hidden="true"></div>
+    <div class="kontrol">
+      <button id="acak"><svg viewBox="0 0 24 24"><path d="M3 7h3c5 0 7 10 12 10h3m0 0l-3-3m3 3l-3 3M3 17h3c1.700 0 3-1 4-2.500M14 9.500C15 8 16.300 7 18 7h3m0 0l-3-3m3 3l-3 3"/></svg>Acak</button>
+      <button id="mundur"><svg viewBox="0 0 24 24"><path d="M6 5v14M19 5L9 12l10 7z"/></svg>Sebelum</button>
+      <button class="utama" id="play"><i id="ikonPlay"></i><span id="teksPlay">PUTAR</span></button>
+      <button id="maju"><svg viewBox="0 0 24 24"><path d="M18 5v14M5 5l10 7-10 7z"/></svg>Berikut</button>
+      <button id="ulang"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 10-2 6m2 3v-4h-4"/></svg>Ulangi</button>
+    </div>
+    <a class="tombol-lebar" id="situs" target="_blank" rel="noopener" hidden></a>
+    <label class="volume">Suara <input type="range" id="volume" min="0" max="100" value="90"></label>
+    <div class="judul"><h2>Matikan otomatis</h2></div>
+    <div class="tidur" id="tidur">
+      <button data-m="0" class="on">Tidak</button><button data-m="15">15 mnt</button><button data-m="30">30 mnt</button><button data-m="60">60 mnt</button>
+    </div>
+    <div class="judul"><h2>Berikutnya</h2></div>
+    <div class="list" id="berikut"></div>
+  </div>
+  <nav></nav>
+</section>
+
+<!-- LAYAR BERANDA -->
+<section class="phone aktif" id="layarBeranda" aria-label="Daftar radio">
+  <div class="scroll" id="gulirBeranda">
+    <header class="top">
+      <div class="art s" style="--a:#2f5fe8;--b:#8b5cf6;border-radius:99px"><svg viewBox="0 0 24 24"><path d="M19 15A8 8 0 019 5a8 8 0 1010 10z"/></svg></div>
+      <h1><small>Assalamu’alaikum</small>Radio Islami</h1>
+      <button class="bulat" id="huruf" aria-pressed="false" aria-label="Perbesar tulisan">A+</button>
+      <button class="bulat" id="bantuan" aria-label="Cara memakai">?</button>
+    </header>
+    <button class="tombol-lebar" id="cepat" style="margin-top:0">▶ DENGARKAN SEKARANG</button>
+    <div id="bagianTerakhir">
+      <div class="judul"><h2 id="judulTerakhir">Pilihan cepat</h2></div>
+      <div class="grid2" id="terakhir"></div>
+    </div>
+    <div class="judul"><h2>Putar langsung</h2><button data-ke="daftar">Lihat semua →</button></div>
+    <div class="geser" id="unggulan"></div>
+    <div class="judul" id="judulDaftar"><h2>Daftar radio</h2><button id="soalFav" aria-pressed="false">♥ Favorit saya</button></div>
+    <input class="cari" id="cari" type="search" placeholder="Cari nama radio atau kota" aria-label="Cari radio">
+    <div class="list" id="daftar"></div>
+    <div class="judul"><h2>Radio tambahan</h2></div>
+    <div class="list" id="tambahan"></div>
+    <div class="judul"><h2>Kumpulan radio daerah</h2></div>
+    <a class="baris" href="https://player.radioislam.or.id" target="_blank" rel="noopener">
+      <span class="art s" style="--a:#b91c1c;--b:#f97316">RII</span>
+      <span class="info"><b>Radio Islam Indonesia</b><small>Puluhan radio daerah di radioislam.or.id</small></span>
+      <span class="aksi luar">BUKA ↗</span>
+    </a>
+  </div>
+  <div class="mini-player" id="mini" hidden>
+    <button class="buka" data-ke="putar"><span id="miniNama"></span><small id="miniStatus"></small></button>
+    <button class="bulat on" id="miniPlay" aria-label="Putar atau berhenti"></button>
+  </div>
+  <nav></nav>
+</section>
+</main>
+
+<dialog id="dlg">
+  <h2>Cara memakai</h2>
+  <ol>
+    <li>Tekan nama radio. Suara akan langsung diputar.</li>
+    <li>Tekan tombol bulat besar untuk berhenti atau memutar lagi.</li>
+    <li>Tekan <b>A+</b> agar tulisan lebih besar.</li>
+    <li>Tombol kuning <b>Situs</b> berarti radio dibuka di halaman lain.</li>
+    <li>Jika tidak ada suara, periksa internet dan volume HP.</li>
+  </ol>
+  <form method="dialog"><button class="tombol-lebar">Mengerti</button></form>
+</dialog>
+
+<audio id="audio" preload="none"></audio>
+
+<script>
+/* ===== DATA RADIO =====
+   url   : alamat streaming, dicoba berurutan. Kosongkan [] jika belum ada.
+   situs : halaman cadangan jika streaming tidak bisa diputar. */
+const RII = n => [`https://radioislamindonesia.com/${n}.mp3`, `http://radioislamindonesia.com/${n}.mp3`];
+const RADIO = [
+ {id:"rodja",nama:"Radio Rodja",ket:"756 AM · 100.1 FM Bogor",k:"RJ",w:["#0f766e","#34d399"],url:[...RII("rodja-low"),"https://live2.radiorodja.com/rodja.mp3"],situs:"https://www.radiorodja.com/"},
+ {id:"rasil",nama:"Radio Silaturahim (Rasil)",ket:"720 AM Bekasi",k:"RS",w:["#1d4ed8","#38bdf8"],url:[],situs:"https://zeno.fm/radio/rasil-720-radio-silaturahim-langsung/"},
+ {id:"fajri",nama:"Radio Fajri FM",ket:"99.3 FM Bogor",k:"FJ",w:["#4338ca","#a78bfa"],url:["https://radio.mitradio.com/listen/2._fajrifm_-_bogor/radio.mp3","https://radio.mitradio.com/listen/fajrifm/radio.mp3"],situs:"https://fajrifm.com/"},
+ {id:"mqfm",nama:"Radio MQFM",ket:"102.7 FM Bandung",k:"MQ",w:["#0369a1","#22d3ee"],url:["https://mqfmstreaming.kamil.web.id/;"],situs:"https://mqfmnetwork.com/"},
+ {id:"muslim",nama:"Radio Muslim",ket:"107.7 FM Yogyakarta",k:"RM",w:["#7c2d12","#fb923c"],url:["https://streaming.radiomuslim.com","http://live.radiomuslim.com/;stream/1/;","http://syaria.net:9996/;"],situs:"https://radiomuslim.com/"},
+ {id:"kita",nama:"Radio Kita FM",ket:"94.3 FM Cirebon",k:"KT",w:["#9d174d","#f472b6"],url:["https://sunnah.radio.yufid.com/;stream.mp3"],situs:"http://radiokitafm.com/"},
+ {id:"hang",nama:"Radio Hang FM",ket:"106.0 FM Batam",k:"HG",w:["#166534","#a3e635"],url:[],situs:"https://www.hangmedia.co.id/"},
+ {id:"ras",nama:"Radio RAS FM",ket:"95.5 FM Jakarta",k:"RAS",w:["#6d28d9","#f0abfc"],url:["https://i.klikhost.com/9006/stream"],situs:"https://rasfmjakarta.com/rastreaming/"},
+ {id:"quran",nama:"Radio Suara Quran",ket:"94.4 FM Solo",k:"SQ",w:["#075985","#818cf8"],url:["http://suaraquran.com:8030/;audio.mp3"],situs:"https://onlineradiobox.com/id/suaraquran/"},
+ {id:"attaqwa",nama:"Radio Attaqwa FM",ket:"107.7 FM Bekasi",k:"AT",w:["#854d0e","#facc15"],url:[],situs:"https://onlineradiobox.com/id/attaqwa/"},
+ {id:"rodjabdg",tambah:1,nama:"Radio Rodja Bandung",ket:"104.3 FM Bandung",k:"RB",w:["#115e59","#5eead4"],url:RII("rodja-bandung"),situs:"https://rodjabandung.com/"},
+ {id:"iman",tambah:1,nama:"Radio Suara Al-Iman",ket:"846 AM Surabaya",k:"AI",w:["#1e3a8a","#60a5fa"],url:RII("aliman"),situs:"https://aliman.id/live/"},
+ {id:"mutiara",tambah:1,nama:"Radio Mutiara Qur’an",ket:"1170 AM Semarang",k:"MQr",w:["#5b21b6","#60a5fa"],url:RII("mutiaraquran"),situs:"https://radiomutiaraquran.com/"},
+ {id:"hidayah",tambah:1,nama:"Radio Hidayah",ket:"103.4 FM Pekanbaru",k:"HD",w:["#831843","#fb7185"],url:RII("radiohidayah"),situs:"https://www.radiohidayah.com/"},
+ {id:"tarbiyah",tambah:1,nama:"Radio Tarbiyah Sunnah",ket:"1476 AM Bandung",k:"TS",w:["#134e4a","#2dd4bf"],url:RII("tarbiyah"),situs:"https://radiotarbiyahsunnah.com/streaming-radio-tarbiyah-sunnah/"}
+];
+
+const $ = s => document.querySelector(s);
+const audio = $("#audio");
+const simpan = (k,v) => { try{localStorage.setItem(k,JSON.stringify(v))}catch(e){} };
+const ambil = (k,d) => { try{return JSON.parse(localStorage.getItem(k)) ?? d}catch(e){return d} };
+const cari = id => RADIO.find(r=>r.id===id);
+const bisa = RADIO.filter(r=>r.url.length);
+
+let riwayat = ambil("riwayat",[]).filter(cari);
+let favorit = ambil("favorit",[]).filter(cari);
+let kini = cari(riwayat[0]) || RADIO[0];
+let keadaan = "diam"; // diam | sambung | main | gagal | luar
+let nomorUrl = 0, sesi = 0, batas, mulai = 0, jamTidur, hanyaFav = false, ulangOtomatis = 0;
+
+const IKON_PLAY = '<svg viewBox="0 0 24 24" style="fill:currentColor"><path d="M8 5v14l11-7z"/></svg>';
+const IKON_STOP = '<svg viewBox="0 0 24 24" style="fill:currentColor"><path d="M7 5h3.5v14H7zM13.500 5H17v14h-3.500z"/></svg>';
+const art = (r,c="s") => `<span class="art ${c}" style="--a:${r.w[0]};--b:${r.w[1]}">${r.k}</span>`;
+
+/* ---------- Pemutaran ---------- */
+function pilih(r, buka=true){
+  kini = r;
+  if(buka) ke("putar");
+  r.url.length ? putar() : (hentikan(), keadaan="luar", gambar());
+}
+function putar(){
+  if(!kini.url.length){ keadaan="luar"; gambar(); return; }
+  nomorUrl = 0; ulangOtomatis = 0; coba();
+}
+function coba(){
+  const s = ++sesi;
+  clearTimeout(batas);
+  keadaan = "sambung"; mulai = 0;
+  audio.src = kini.url[nomorUrl];
+  const janji = audio.play();
+  if(janji) janji.catch(e=>{
+    if(s!==sesi) return;
+    if(e.name==="NotAllowedError"){ hentikan(); gambar(); }
+    else if(e.name!=="AbortError") gagal(s);
+  });
+  batas = setTimeout(()=>gagal(s), 12000);
+  gambar();
+}
+function gagal(s){
+  if(s!==sesi) return;
+  if(++nomorUrl < kini.url.length) return coba();
+  hentikan(); keadaan="gagal"; gambar();
+}
+function hentikan(){
+  sesi++; clearTimeout(batas);
+  audio.pause(); audio.removeAttribute("src"); audio.load();
+  keadaan="diam"; mulai=0;
+}
+function tombolPlay(){
+  if(keadaan==="main"||keadaan==="sambung"){ hentikan(); gambar(); }
+  else if(keadaan==="luar") window.open(kini.situs,"_blank","noopener");
+  else putar();
+}
+audio.addEventListener("playing",()=>{
+  clearTimeout(batas); keadaan="main"; if(!mulai) mulai=Date.now();
+  riwayat=[kini.id,...riwayat.filter(i=>i!==kini.id)].slice(0,4); simpan("riwayat",riwayat);
+  gambar();
+});
+function putus(){
+  if(!audio.getAttribute("src")) return;
+  if(keadaan==="main"){ // siaran terputus: sambungkan lagi
+    if(ulangOtomatis++ < 3) coba(); else { hentikan(); keadaan="gagal"; gambar(); }
+  } else gagal(sesi);
+}
+audio.addEventListener("error",putus);
+audio.addEventListener("ended",putus);
+audio.addEventListener("waiting",()=>{
+  if(keadaan!=="main") return;
+  const s=sesi; clearTimeout(batas); keadaan="sambung";
+  batas=setTimeout(()=>gagal(s),15000); gambar();
+});
+audio.addEventListener("pause",()=>{ // dihentikan dari layar kunci / telepon masuk
+  if(keadaan==="main" && audio.getAttribute("src") && !audio.ended){ hentikan(); gambar(); }
+});
+function pindah(arah){
+  let i = bisa.indexOf(kini);
+  if(i<0) i = arah>0 ? -1 : 0;
+  pilih(bisa[(i+arah+bisa.length)%bisa.length], false);
+}
+
+/* ---------- Tampilan ---------- */
+function baris(r){
+  const aktif = r===kini && (keadaan==="main"||keadaan==="sambung");
+  return `<button class="baris ${r===kini?"on":""}" data-id="${r.id}">${art(r)}
+    <span class="info"><b>${r.nama}</b><small>${r.ket}</small></span>
+    ${r.url.length ? `<span class="aksi">${aktif?IKON_STOP:IKON_PLAY}${aktif?"STOP":"PUTAR"}</span>` : `<span class="aksi luar">↗<br>SITUS</span>`}</button>`;
+}
+function teksStatus(){
+  if(keadaan==="sambung") return "Menyambungkan… mohon tunggu";
+  if(keadaan==="main"){
+    const d=Math.floor((Date.now()-mulai)/1000);
+    return `● SIARAN LANGSUNG · ${String(Math.floor(d/60)).padStart(2,"0")}:${String(d%60).padStart(2,"0")}`;
+  }
+  if(keadaan==="gagal") return "Siaran belum bisa diputar. Pilih radio lain atau buka situsnya.";
+  if(keadaan==="luar"||!kini.url.length) return "Radio ini didengarkan lewat situs lain.";
+  return "Tekan tombol biru untuk mendengarkan";
+}
+function status(){
+  const e=$("#status"), t=teksStatus();
+  if(e.textContent!==t) e.textContent=t;
+  e.className="status "+(keadaan==="main"?"live":keadaan==="gagal"?"err":"");
+}
+function gambar(){
+  const jalan = keadaan==="main"||keadaan==="sambung";
+  $("#layarPutar").classList.toggle("main-on",keadaan==="main");
+  const s=$("#sampul"); s.textContent=kini.k; s.style.setProperty("--a",kini.w[0]); s.style.setProperty("--b",kini.w[1]);
+  $("#judul").textContent=kini.nama; $("#sub").textContent=kini.ket;
+  status();
+  $("#ikonPlay").innerHTML = jalan?IKON_STOP:IKON_PLAY;
+  $("#teksPlay").textContent = jalan?"BERHENTI":(!kini.url.length?"BUKA":"PUTAR");
+  const a=$("#situs"); a.href=kini.situs; a.hidden = !(keadaan==="gagal"||!kini.url.length);
+  a.textContent="Buka situs radio ↗";
+  $("#fav").classList.toggle("on",favorit.includes(kini.id));
+  $("#fav").setAttribute("aria-pressed",favorit.includes(kini.id));
+  const q=$("#cari").value.toLowerCase().trim();
+  const cocok = r => (!q || (r.nama+" "+r.ket).toLowerCase().includes(q)) && (!hanyaFav || favorit.includes(r.id));
+  $("#daftar").innerHTML = RADIO.filter(r=>!r.tambah&&cocok(r)).map(baris).join("") ||
+    `<p class="kosong">${hanyaFav?"Belum ada favorit yang cocok. Tekan tanda hati di layar pemutar.":"Tidak ditemukan di daftar utama."}</p>`;
+  $("#tambahan").innerHTML = RADIO.filter(r=>r.tambah&&cocok(r)).map(baris).join("") || `<p class="kosong">Tidak ada.</p>`;
+  const cepat = riwayat.length ? [...new Set([...riwayat,"rodja","fajri","iman","mutiara"])].slice(0,4) : ["rodja","fajri","iman","mutiara"];
+  $("#judulTerakhir").textContent = riwayat.length?"Terakhir diputar":"Pilihan cepat";
+  $("#terakhir").innerHTML = cepat.map(cari).map(r=>`<button class="mini" data-id="${r.id}">${art(r)}<span class="t">${r.nama.replace(/^Radio /,"")}</span></button>`).join("");
+  const i=bisa.indexOf(kini);
+  $("#berikut").innerHTML = [1,2,3].map(n=>baris(bisa[(i+n+bisa.length)%bisa.length])).join("");
+  $("#mini").hidden = !jalan;
+  $("#miniNama").textContent=kini.nama;
+  $("#miniStatus").textContent = keadaan==="main"?"Sedang diputar":"Menyambungkan…";
+  $("#miniPlay").innerHTML=IKON_STOP;
+  $("#cepat").textContent = jalan?"■ HENTIKAN SIARAN":`▶ DENGARKAN ${kini.url.length?kini.nama.toUpperCase():"RADIO RODJA"}`;
+  if("mediaSession" in navigator && window.MediaMetadata){
+    navigator.mediaSession.metadata=new MediaMetadata({title:kini.nama,artist:kini.ket});
+  }
+}
+function ke(tujuan){
+  const putar = tujuan==="putar";
+  $("#layarPutar").classList.toggle("aktif",putar);
+  $("#layarBeranda").classList.toggle("aktif",!putar);
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.ke===(putar?"putar":"beranda")));
+  if(tujuan==="daftar") $("#judulDaftar").scrollIntoView({behavior:"smooth"});
+  if(tujuan==="beranda") $("#gulirBeranda").scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ---------- Awal ---------- */
+document.querySelectorAll("nav").forEach(n=>n.innerHTML=
+ `<button data-ke="beranda" class="on"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg>Beranda</button>
+  <button data-ke="daftar" class="tengah" aria-label="Cari radio"><i><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.500 16.500L21 21"/></svg></i>Cari</button>
+  <button data-ke="putar"><svg viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0116 0v2M4 14h4v6H4zM16 14h4v6h-4z"/></svg>Pemutar</button>`);
+$("#unggulan").innerHTML = ["rodja","fajri","ras","kita","mqfm","muslim"].map(cari).map(r=>
+ `<button class="besar-card" data-id="${r.id}"><span class="art" style="--a:${r.w[0]};--b:${r.w[1]}">${r.k}<span class="main">${IKON_PLAY}</span></span><b>${r.nama}</b><small>${r.ket}</small></button>`).join("");
+$("#gelombang").innerHTML = Array.from({length:38},(_,i)=>`<i style="--h:${25+Math.abs(Math.sin(i*1.7)*Math.cos(i*.45))*75}%;--d:${.35+(i%5)*.12}s"></i>`).join("");
+
+document.addEventListener("click",e=>{
+  const r=e.target.closest("[data-id]");
+  if(r){
+    const x=cari(r.dataset.id);
+    if(x===kini && (keadaan==="main"||keadaan==="sambung")){
+      if(r.classList.contains("baris")){ hentikan(); gambar(); } else ke("putar");
+    } else pilih(x);
+    return;
+  }
+  const t=e.target.closest("[data-ke]"); if(t) ke(t.dataset.ke);
+});
+$("#play").onclick=tombolPlay;
+$("#miniPlay").onclick=tombolPlay;
+$("#cepat").onclick=()=>{
+  if(keadaan==="main"||keadaan==="sambung"){ hentikan(); gambar(); }
+  else pilih(kini.url.length?kini:RADIO[0]);
+};
+$("#maju").onclick=()=>pindah(1);
+$("#mundur").onclick=()=>pindah(-1);
+$("#ulang").onclick=putar;
+$("#acak").onclick=()=>{ const l=bisa.filter(r=>r!==kini); pilih(l[Math.floor(Math.random()*l.length)],false); };
+$("#fav").onclick=()=>{
+  favorit = favorit.includes(kini.id)?favorit.filter(i=>i!==kini.id):[...favorit,kini.id];
+  simpan("favorit",favorit); gambar();
+};
+$("#soalFav").onclick=e=>{
+  hanyaFav=!hanyaFav; e.target.textContent=hanyaFav?"Tampilkan semua":"♥ Favorit saya";
+  e.target.setAttribute("aria-pressed",hanyaFav); gambar();
+};
+$("#cari").oninput=gambar;
+function aturHuruf(b){
+  document.documentElement.classList.toggle("besar",b);
+  $("#huruf").classList.toggle("on",b); $("#huruf").setAttribute("aria-pressed",b); simpan("besar",b);
+}
+$("#huruf").onclick=()=>aturHuruf(!document.documentElement.classList.contains("besar"));
+$("#bantuan").onclick=()=>$("#dlg").showModal();
+$("#volume").oninput=e=>audio.volume=e.target.value/100;
+audio.volume=.9;
+$("#tidur").onclick=e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  clearTimeout(jamTidur);
+  const pilihTidur = m => document.querySelectorAll("#tidur button").forEach(x=>x.classList.toggle("on",x.dataset.m===m));
+  pilihTidur(b.dataset.m);
+  if(+b.dataset.m) jamTidur=setTimeout(()=>{hentikan();gambar();pilihTidur("0")}, b.dataset.m*60000);
+};
+$("#bagikan").onclick=async()=>{
+  const data={title:kini.nama,text:`Dengarkan ${kini.nama} (${kini.ket})`,url:kini.situs};
+  try{ if(navigator.share) await navigator.share(data); else { await navigator.clipboard.writeText(data.url); alert("Alamat radio sudah disalin."); } }
+  catch(e){ if(e.name!=="AbortError") prompt("Salin alamat ini:",data.url); }
+};
+if("mediaSession" in navigator){
+  const set=(a,f)=>{try{navigator.mediaSession.setActionHandler(a,f)}catch(e){}};
+  set("play",putar); set("pause",()=>{hentikan();gambar()}); set("nexttrack",()=>pindah(1)); set("previoustrack",()=>pindah(-1));
+}
+setInterval(()=>{ if(keadaan==="main") status(); },1000);
+aturHuruf(ambil("besar",false));
+gambar();
+</script>
+</body>
+</html>
